@@ -1,0 +1,45 @@
+Signali
+
+Uvodne napomene:
+
+    SIGINT se salje procesu iz terminala kad korisnik pritisne Ctrl+C
+
+    SIGQUIT se salje kada se pritisne Ctrl+\
+
+    Da bi mogli da imamo vremena da posaljemo signal procesu, vecinu ovih programa treba napravititako da proces beskonacno spava u intervalima od npr 2 sekunde, potom ispise poruku da jos spava i tako dalje. Koristiti na primer poziv sleep koji prima broj sekundi.
+
+Potencijalno korisni pozivi: sigaction, signal (ne preporucuje se jer je stari poziv); kill, exit, getpid, getppid
+
+man 7 signal sadrzi detaljne informacije o signalima, koje su podrazumevane akcije i slicno.
+Ignorisanje signala
+
+Napraviti program koji ce ignorisati SIGINT, tj registrovati SIG_IGN kao hendler.
+
+Glavni program treba da je u skladu sa preporukama gore, tj da beskonacno spava.
+
+Ovaj program ocigledno necemo moci ubiti sa Ctrl+C, moze se koristiti gore navedeni SIGQUIT, ili iz drugog terminala komande kill ili killall.
+Hvatanje signala
+
+Napraviti program koji registruje svoju proceduru za hvatanje signala. Registrovati je vezano za SIGINT, koji tipicno saljemo programu kad pritisnemo Ctrl+C u terminalu.
+
+Program treba samo da ispise da je uhvatio signal i da ce se sad zavrsiti, te da pozove exit.
+
+Glavni program napraviti u skladu sa preporukama gore, da beskonacno spava.
+
+Napomena: nije preporuceno da se pozivaju procedure kao sto je printf iz signal hendlera, ali za ove demonstracije se moze to raditi. Urednija varijanta je postavljanje nekakve zastavice (promenljive) na novu vrednost, a da glavni program proverava izmedju spavanja da li se nesto desilo i onda odluci da se ugasi.
+Program koji ne bi da umre
+
+Napraviti program (ili promeniti prethodni) koji ce odbijati da se ugasi dok ga korisnik ne proba ubiti bar 4 puta.
+
+U glavnoj petlji, pored ispisa za spavanje, dodati ispis koliko puta je dosad program primio signal.
+Kontrola deteta
+
+Napraviti program koji ce da obavestava dete kada da radi, a kada da ne radi.
+
+Za potrebe ove demonstracije, dete ce samo ispisivati svake sekunde da li samo "spava" ili sada nesto "radi".
+
+Proces roditelj treba da koristi SIGUSR1 da obavesti dete da pocne da radi, i SIGUSR2 da mu opet kaze da samo spava. Za ovo se moze koristiti poziv kill.
+
+Napraviti tako da nakon 1 sekunde roditelj kaze detetu da pocne da radi, a onda nakon jos 3 kaze da prestane. Nakon jos dve sekunde poslati signal detetu da se ugasi i potom zavrsiti sa izvrsavanjem programa.
+
+Roditelj takodje treba da namesti da ga ne interesuje kada se dete zavrsi, tj da ignorise SIGCHLD signal, sto ce znaciti da ne moramo da koristimo wait da bi sprecili pojavu zombi procesa
